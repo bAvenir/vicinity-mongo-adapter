@@ -31,6 +31,7 @@ mkdir -p ${MY_PATH}/gateway/log
 mkdir -p ${MY_PATH}/agent/exports
 mkdir -p ${MY_PATH}/agent/imports
 mkdir -p ${MY_PATH}/nginx/logs
+mkdir -p ${MY_PATH}/redis/data
 mkdir -p ${MY_PATH}/log
 
 # Kill and remove old proxy containers
