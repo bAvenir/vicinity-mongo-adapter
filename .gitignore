@@ -5,7 +5,6 @@ package-*
 .DS_Store
 .scannerwork/
 coverage/
-*.example
 test/
 _commands.sh
 ## Gateway files
