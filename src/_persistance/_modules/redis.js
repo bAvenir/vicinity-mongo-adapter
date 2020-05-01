@@ -87,8 +87,8 @@ module.exports = {
     return new Promise(function (resolve, reject) {
       client.save(function(err, reply) {
         if (err) {
-          logger.error(err, "REDIS");
-          reject(false);
+          logger.warn(err, "REDIS");
+          resolve(false);
         } else {
           logger.info(`REDIS DB persisted: ${reply}`, "REDIS");
           resolve(reply);
