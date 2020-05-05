@@ -8,7 +8,7 @@ services:
       context: .
       target: prod
     volumes:
-    - .:/app:delegated
+    - ./.env:/app/.env:ro
     depends_on:
       cache-db:
         condition: service_healthy

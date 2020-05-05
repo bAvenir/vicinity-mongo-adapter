@@ -34,6 +34,9 @@ mkdir -p ${MY_PATH}/nginx/logs
 mkdir -p ${MY_PATH}/redis/data
 mkdir -p ${MY_PATH}/log
 
+# Make gateway folders accessible to docker
+chmod 777 -R ${MY_PATH}/gateway
+
 # Kill and remove old proxy containers
 docker kill proxy bavenir-adapter gateway cache-db
 docker rm proxy bavenir-adapter gateway cache-db

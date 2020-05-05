@@ -47,6 +47,13 @@ First run **npm install** in the project folder
     * npm run test -> for jest tests
     * npm run analyze -> for sonarqube analysis 
 
+## Linux deployment notes
+
+* Change path in docker-compose file for volumes
+    * Replace ./ for ~/<proj-name>/
+* Make sure Gateway folder has full permissions
+* Make sure iptables are set to make Docker subnet available
+
 ## Configuration
 
 Use a .env file

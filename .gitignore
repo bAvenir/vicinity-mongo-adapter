@@ -1,7 +1,6 @@
 ## General
 .env
 node_modules
-package-*
 .DS_Store
 .scannerwork/
 coverage/

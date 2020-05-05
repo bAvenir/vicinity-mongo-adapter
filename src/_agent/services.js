@@ -110,11 +110,10 @@ services.activateEventChannels = async function(oid, events){
     let logger = new Log();
     try{
         if(typeof events === 'string') events = events.split(',');
-        let todo = [];
         for(let i = 0, l = events.length; i<l; i++){
-            todo.push(gateway.activateEventChannel(oid, events[i]));
+            // Add channels synchronously
+            await gateway.activateEventChannel(oid, events[i]);
         }
-        await Promise.all(todo);
         return Promise.resolve(true);
     } catch(err) {
         logger.warn('Event channels were not created, check gateway connection', 'AGENT');
