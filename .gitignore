@@ -19,3 +19,6 @@ log/
 nginx/logs/
 ## Redis
 redis/data/
+## Mongo
+mongo/logs/
+mongo/volume/

@@ -1,4 +1,4 @@
-# bAvenir VICINITY adapter
+# bAvenir VICINITY adapter for Mongo
 
 **Current version V.1**
 
@@ -31,9 +31,11 @@ The first version aims to support the following interactions:
 
 ## How to run
 
-First run **npm install** in the project folder
+* Initialize Mongo
+    *  ./_mongo-init.sh  --> Prepares db for first use
 
 * Development mode
+    * First run **npm install** in the project folder
     * ./_setup.sh --> Build and run development mode
     * ./run.sh --> Run
     * ./stop.sh --> Stop without destroying docker image
@@ -106,6 +108,15 @@ Example:
     SONAR_TESTS=src/_test
     SONAR_TEST_FILE_PATH=./coverage/test-reporter.xml
     SONAR_COVERAGE_FILE_PATH=./coverage/lcov.info
+    ## Mongo
+    MONGO_URL=mongodb 
+    MONGO_PORT=27017
+    ## Mongo (Update following values if needed)
+    MONGO_INITDB_ROOT_USERNAME=bavenir
+    MONGO_INITDB_ROOT_PASSWORD=bavenir
+    MONGO_INITDB_DATABASE="vicinitydb"
+    MONGO_NON_ROOT_USERNAME="vicinity"
+    MONGO_NON_ROOT_PASSWORD="test"
 
 Load into app using process.env.ENV_VAR and the npm package dotenv.
 

@@ -35,12 +35,11 @@ mkdir -p ${MY_PATH}/redis/data
 mkdir -p ${MY_PATH}/log
 
 # Make gateway folders accessible to docker
-chmod 777 -R ${MY_PATH}/gateway
-
+chmod -R 777 ${MY_PATH}/gateway
 # Kill and remove old proxy containers
-docker kill proxy bavenir-adapter gateway cache-db
-docker rm proxy bavenir-adapter gateway cache-db
-docker rmi bavenir-adapter_bavenir-adapter
+docker kill proxy bavenir-adapter-mongo_bavenir-adapter gateway cache-db mongodb
+docker rm proxy bavenir-adapter-mongo_bavenir-adapter gateway cache-db mongodb
+docker rmi bavenir-adapter-mongo_bavenir-adapter
 docker rm $(docker ps -a -q) # Remove zombi containers
 
 # Start proxy container

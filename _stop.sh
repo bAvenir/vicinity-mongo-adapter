@@ -9,6 +9,6 @@ Where:
       -h  Shows help"
 
 # Kill and remove old proxy containers
-docker kill proxy bavenir-adapter gateway cache-db
-docker rm proxy bavenir-adapter gateway cache-db
+docker kill proxy bavenir-adapter gateway cache-db mongodb
+docker rm proxy bavenir-adapter gateway cache-db mongodb
 docker rm $(docker ps -a -q) # Remove zombi containers

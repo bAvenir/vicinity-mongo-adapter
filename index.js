@@ -13,6 +13,9 @@ let logger = new Log();
 // Load services
 const agent = require('./src/_agent/agent');
 
+// MongoDB
+const mongo = require('./src/_adapters/_modules/mongo/mongo');
+
 // Set up redis cache db
 let cache = require("./src/_persistance/_modules/redis");
 
@@ -71,7 +74,7 @@ async function bootstrap(){
     await agent.initialize();
 
     // Run other services here
-    // ...
+    await mongo.connect();
     
     logger.info("All services initialized", "MAIN");
 
