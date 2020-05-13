@@ -1,0 +1,182 @@
+[
+    {
+        "pid": "PeakPower",
+        "monitors": "adapters:PVInstalledCapacity",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "double"
+                        }
+                    },
+                    {
+                        "name": "units",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "pid": "EnergyTotal",
+        "monitors": "adapters:AccumulatedEnergyProduced",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "units",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "pid": "IsOnline",
+        "monitors": "adapters:DeviceStatus",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "pid": "P_Grid",
+        "monitors": "adapters:InverterGridActivePowerLoad",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "double"
+                        }
+                    },
+                    {
+                        "name": "units",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "pid": "P_Load",
+        "monitors": "adapters:InverterConsumerActivePowerLoad",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "double"
+                        }
+                    },
+                    {
+                        "name": "units",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "pid": "P_PV",
+        "monitors": "adapters:InverterActualActivePower",
+        "read_link": {
+            "href": "/device/{oid}/property/{pid}",
+            "output": {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "property",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "predicate": "core:value",
+                        "schema": {
+                            "type": "double"
+                        }
+                    },
+                    {
+                        "name": "units",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

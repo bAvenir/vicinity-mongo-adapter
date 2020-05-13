@@ -1,0 +1,7 @@
+[
+    {"oid": "0e268838-25f3-45b7-825e-7b5302e9cde8", "event": "pv", "name": "PV-Anlage mit Batteriespeicher EnG", "type": "ComboBatteryPV", "ownerId": "cd4df0fe-70de-4e64-a5e7-e2cbf70b7e19", "ownerName": "Prosumer"},
+    {"oid": "30d0402f-ba0b-442f-a0ea-342072559fcd", "event": "pv", "name": "Hacker Joachim", "type": "ComboBatteryPV", "ownerId": "cd4df0fe-70de-4e64-a5e7-e2cbf70b7e19", "ownerName": "Prosumer"},
+    {"oid": "682abc3a-589c-4939-9e70-3711bb449bcb", "event": "pv", "name": "Feuerwehrhaus Neuberg", "type": "ComboBatteryPV", "ownerId": "cd4df0fe-70de-4e64-a5e7-e2cbf70b7e19", "ownerName": "Prosumer"},
+    {"oid": "6defcb16-c526-49d5-b43d-1f41e5392ea1", "event": "pv", "name": "Gemeinde Deutsch Schützen - Amtsgebäude", "type": "ComboBatteryPV", "ownerId": "cd4df0fe-70de-4e64-a5e7-e2cbf70b7e19", "ownerName": "Prosumer"},
+    {"oid": "7c0f9b3f-e5ad-4e52-b2d9-8319feec764d", "event": "pv", "name": "Gemeindehaus Neuberg", "type": "ComboBatteryPV", "ownerId": "cd4df0fe-70de-4e64-a5e7-e2cbf70b7e19", "ownerName": "Prosumer"}
+]
