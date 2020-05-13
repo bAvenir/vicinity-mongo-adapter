@@ -146,8 +146,13 @@ module.exports.getCountOfRegistrations = async function(){
  */
 module.exports.getInteractionObject = async function(type, id){
     let logger = new Log();
-    try{ 
-        let obj = await redis.hget(type + ":" + id, "body");
+    let obj;
+    try{
+        if(id){
+            obj = await redis.hget(type + ":" + id, "body");
+        } else {
+            obj = await redis.smembers(type);
+        }
         return Promise.resolve(obj);
     } catch(err) {
         logger.error(err, "PERSISTANCE")
@@ -289,6 +294,26 @@ module.exports.redisHealth = async function(){
     try{
         await redis.health();
         return Promise.resolve('OK');
+    } catch(err){
+        return Promise.resolve(false);
+    }
+}
+
+// MAPPINGS 
+
+/**
+ * Get all mappers
+ */
+module.exports.getMappers = async function(){
+    try{
+        let aux = [];
+        let result = [];
+        let mappers = await redis.smembers('MAPPERS');
+        for(let i=0, l=mappers.length; i<l; i++){
+            aux = mappers[i].split(':');
+            result.push({'oid': aux[0], 'eid': aux[1], 'name': aux[2], 'type': aux[3], 'ownerId': aux[4], 'ownerName': aux[5]});
+        }
+        return Promise.resolve(result);
     } catch(err){
         return Promise.resolve(false);
     }

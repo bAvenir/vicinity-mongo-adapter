@@ -21,6 +21,12 @@ const proxyUrl = config.proxyUrl;
 const dummyModule = require('./_modules/dummy');
 const proxyModule = require('./_modules/proxy');
 
+var EventEmitter = require('events');
+
+// create amd export EventEmitter object
+var eventEmitter = new EventEmitter();
+module.exports.eventEmitter = eventEmitter;
+
 // TBD Include other adapter modules when available
 // TBD Handle events and actions sent by gtw
 
@@ -95,22 +101,9 @@ module.exports.proxySetProperty = async function(oid, pid, body){
  */
 module.exports.proxyReceiveEvent = async function(oid, eid, body){
     let logger = new Log();
-    let result;
     try{ 
-        // TBD Check if combination of oid + pid exists
-
-        switch (collectionMode) {
-            case 'dummy':
-                let event = Object.keys(body).length === 0 ? "Empty body" : JSON.stringify(body);
-                logger.info(`Event received from channel ${eid} of ${oid}: ${event}`, "ADAPTER");
-                break;
-            case 'proxy':
-                await proxyModule.receiveEvent(oid, eid, body, proxyUrl);
-                break;
-            default:
-                throw new Error('ADAPTER ERROR: Selected module could not be found');
-        }
-        logger.debug(`Event received from channel ${eid} of ${oid} in mode: ${collectionMode}`, "ADAPTER");
+        eventEmitter.emit("pv", body);
+        logger.debug(`Event received from channel ${eid} of ${oid} in mode: Mongo`, "ADAPTER");
     } catch(err) {
         logger.error(err, "ADAPTER")
     }

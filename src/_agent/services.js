@@ -121,4 +121,32 @@ services.activateEventChannels = async function(oid, events){
     }
 }
 
+/**
+ * Subscribe all events in mapper.json
+ */
+services.subscribeEvents = async function(oids, subscribers){
+    try{
+        if(oids.length === 0) throw new Error('There are no services registered...');
+        for(let i=0, l=subscribers.length; i<l; i++){
+            await gateway.subscribeRemoteEventChannel(oids[0] ,subscribers[i].oid, subscribers[i].eid);
+        }
+    }catch(err){
+        return Promise.reject(err);
+    }
+}
+
+/**
+ * Unsubscribe all events in mapper.json
+ */
+services.unsubscribeEvents = async function(oids, subscribers){
+    try{
+        if(oids.length === 0) throw new Error('There are no services registered...');
+        for(let i=0, l=subscribers.length; i<l; i++){
+            await gateway.unsubscribeRemoteEventChannel(oids[0] ,subscribers[i].oid, subscribers[i].eid);
+        }
+    }catch(err){
+        return Promise.reject(err);
+    }
+}
+
 module.exports = services;

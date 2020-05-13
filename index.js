@@ -75,6 +75,7 @@ async function bootstrap(){
 
     // Run other services here
     await mongo.connect();
+    await mongo.initialize();
     
     logger.info("All services initialized", "MAIN");
 

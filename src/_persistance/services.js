@@ -28,6 +28,8 @@ fun.storeInMemory = async function(type, array){
             for(let i = 0, l = array.length; i<l; i++){
                 result = await fun.addOid(array[i]);
             }
+        } else if(type === 'mapper') {
+            result = await _storeMapper(array);
         } else {
             result = await _storeInteractions(type, array);
         }
@@ -201,6 +203,26 @@ async function _storeInteractions(type, array){
         }
     }
     return Promise.resolve(success);
+}
+
+/**
+ * Stores mapper in memory
+ * @param {array} array map array with JSONs
+ */
+async function _storeMapper(array){
+    let logger = new Log();
+    try{  
+        await redis.delCache('MAPPERS');
+        for(let i=0, l=array.length; i<l; i++){
+            if(array[i].oid && array[i].event){
+                await redis.sadd('MAPPERS', `${array[i].oid}:${array[i].event}:${array[i].name}:${array[i].type}:${array[i].ownerId}:${array[i].ownerName}`);
+            }
+        }
+        logger.info('Mappings loaded', 'PERSISTANCE');
+        return Promise.resolve(true);
+    } catch(err) {
+        return Promise.reject(err);
+    }
 }
 
 // Export module
