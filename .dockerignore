@@ -1,0 +1,14 @@
+# Exclude files and folders from Docker build context
+## GIT and cache
+.git
+.gitignore
+.cache
+## Other services
+gateway/
+mongo/
+nginx/
+redis/
+## Unnecessary files
+sonar-scanner.js
+docker-compose*
+*.sh

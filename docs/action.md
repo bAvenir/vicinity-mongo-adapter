@@ -1,4 +1,4 @@
- {
+[ {
     "aid": "set-brightness",
     "affects": "adapters:LightColor",
     "read_link": {
@@ -47,3 +47,4 @@
         }
     }
 }
+]

@@ -9,9 +9,13 @@
 * - Receive event from subscribed value
 */ 
 
-// Import logger
-const Log = require('../_classes/logger');
-const persistance =  require('../_persistance/interface');
+// Load VICINITY AGENT
+const vcntagent = require('bavenir-agent');
+
+// Imports
+const Log = vcntagent.classes.logger;
+const persistance = vcntagent.persistance;
+const CustomTimer = require('./_classes/propertiesTimer');
 // Configuration Modes
 const config = require('./configuration');
 const responseMode = config.responseMode;
@@ -20,15 +24,13 @@ const proxyUrl = config.proxyUrl;
 // Modules
 const dummyModule = require('./_modules/dummy');
 const proxyModule = require('./_modules/proxy');
+const mongoModule = require('./_modules/mongo');
 
-var EventEmitter = require('events');
-
-// create amd export EventEmitter object
-var eventEmitter = new EventEmitter();
-module.exports.eventEmitter = eventEmitter;
+// Create global events object
+let propertiesCollector = new CustomTimer();
 
 // TBD Include other adapter modules when available
-// TBD Handle events and actions sent by gtw
+// TBD Handle actions sent by gtw
 
 /**
  * Redirects incoming property requests
@@ -40,7 +42,7 @@ module.exports.proxyGetProperty = async function(oid, pid){
     let logger = new Log();
     let result;
     try{
-        await persistance.combinationExists(oid, pid);
+        // await persistance.combinationExists(oid, pid);
         switch (responseMode) {
             case 'dummy':
                 result = dummyModule.getProperty(oid, pid);
@@ -102,9 +104,46 @@ module.exports.proxySetProperty = async function(oid, pid, body){
 module.exports.proxyReceiveEvent = async function(oid, eid, body){
     let logger = new Log();
     try{ 
-        eventEmitter.emit("pv", body);
-        logger.debug(`Event received from channel ${eid} of ${oid} in mode: Mongo`, "ADAPTER");
+        // TBD Check if combination of oid + pid exists
+
+        switch (collectionMode) {
+            case 'dummy':
+                let event = Object.keys(body).length === 0 ? "Empty body" : JSON.stringify(body);
+                logger.info(`Event received from channel ${eid} of ${oid}: ${event}`, "ADAPTER");
+                break;
+            case 'proxy':
+                await proxyModule.receiveEvent(oid, eid, body, proxyUrl);
+                break;
+            case 'mongo':
+                await mongoModule.insert(oid, eid, body);
+                break;
+            default:
+                throw new Error('ADAPTER ERROR: Selected module could not be found');
+        }
+        logger.debug(`Event received from channel ${eid} of ${oid} in mode: ${collectionMode}`, "ADAPTER");
     } catch(err) {
         logger.error(err, "ADAPTER")
     }
+}
+
+
+/**
+ * Starts collection of properties
+ * Uses mapper.json to find what requests have to be done
+ */
+module.exports.startPropertiesCollection = function(){
+    let logger = new Log();
+    propertiesCollector.start();
+    logger.info('Automatic properties collection started', 'ADAPTER');
+}
+
+
+/**
+ * Stops collection of properties
+ * Uses mapper.json to find what requests have to be done
+ */
+module.exports.stopPropertiesCollection = function(){
+    let logger = new Log();
+    propertiesCollector.stop();
+    logger.info('Automatic properties collection stopped', 'ADAPTER');
 }

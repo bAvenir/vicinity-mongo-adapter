@@ -11,8 +11,11 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   cookieParser = require('cookie-parser'),
-//   rateLimit = require('express-rate-limit'), // Consider adding or use NGINX
-  helmet = require('helmet');
+  helmet = require('helmet'),
+  swaggerUi = require('swagger-ui-express');
+
+// Load VICINITY AGENT
+const vcntagent = require('bavenir-agent');
 
 // Configure express to work with proxy and rate-limit
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -20,29 +23,41 @@ const express = require('express'),
 server.set('trust proxy', 1);
 
 // Load loggers
-const morgan = require('morgan'),
-logger = require('./_utils/logger');
+const Log = vcntagent.classes.logger;
+let logger = new Log();
 
 // Load configuration
-const config = require('./_configuration/configuration');
+const config = require('./configuration');
+
+// Load swagger docs
+const swaggerDocument = require('../docs/swagger.json');
+const swaggerDocumentAgent = require('../node_modules/bavenir-agent/docs/swagger.json');
+let swagger_options = {
+  customCss: '.swagger-ui .topbar { display: none }'
+};
 
 // Load API
-let api = require('./_api/routes'); // Administration API
-let agent = require('./_agent/routes'); // Agent API
+let api = vcntagent.api.admin; // Administration API
+let agent = vcntagent.api.agent; // Agent API
+let proxy = require('./_adapters/_proxy/routes'); // Exposes endpoints that gateway will reach for proxying messages to adapter
+let adapter = require('./_adapters/_api/routes'); // Adapter actions (Can be modified)
 
 // Middlewares
 server.use(cors())
         .use(bodyParser.urlencoded({ extended: true, limit: config.maxPayload}))
         .use(bodyParser.json({limit: config.maxPayload}))
         .use(cookieParser())
-        .use(helmet())
-        .use(morgan(':status - :date[iso] - :method - :url - :response-time - :remote-addr', { "stream": logger.stream}));
+        .use(helmet());
 
 // API 
 // If status code > 400, forwards to next middleware for handling
 // @TODO set up IP rate-limiter for necessary endpoints (NGINX alternative)
-server.use('/agent', agent);
-server.use('/api', api);
+server.use('/agent', proxy);
+server.use('/admin', api);
+server.use('/api', agent);
+server.use('/adapter', adapter);
+server.use('/adapterdocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swagger_options));
+server.use('/agentdocs', swaggerUi.serve, swaggerUi.setup(swaggerDocumentAgent, swagger_options));
 
 // error handler 
 // @TODO Build in separate module

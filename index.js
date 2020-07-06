@@ -1,23 +1,28 @@
 // Load third party packages
-const stoppable  = require('stoppable');
+const stoppable = require('stoppable');
+const dotenv = require('dotenv');
+
+// Read Environmental Variables      
+dotenv.config();
+
+// Load VICINITY AGENT
+const vcntagent = require('bavenir-agent');
 
 // Load modules
-const config = require('./src/_configuration/configuration'),
+const config = require('./src/configuration'),
       app =  require('./src/server'),
-      errorHandler = require('./src/_utils/errorHandler');
+      errorHandler = vcntagent.utils.errorHandler;
 
 // Load loggers
-const Log = require('./src/_classes/logger');
+const Log = vcntagent.classes.logger;
 let logger = new Log();
 
 // Load services
-const agent = require('./src/_agent/agent');
-
-// MongoDB
-const mongo = require('./src/_adapters/_modules/mongo/mongo');
+const agent = vcntagent.services;
+const mongo = require('./src/_adapters/_modules/mongo');
 
 // Set up redis cache db
-let cache = require("./src/_persistance/_modules/redis");
+let persistance = vcntagent.persistance;
 
 /* WEB SERVER lifecycle
   Start server
@@ -68,14 +73,15 @@ Area to start services
 async function bootstrap(){
   try{
     // Start Redis DB
-    cache.start();
+    let testResult = await persistance.redisHealth();
+    if(!testResult) throw new Error('Problem initializing cache');
 
     // TBD decide what to do if initialization fails (Stop adapter, restart, notify ...)
     await agent.initialize();
 
     // Run other services here
+    // ...
     await mongo.connect();
-    await mongo.initialize();
     
     logger.info("All services initialized", "MAIN");
 

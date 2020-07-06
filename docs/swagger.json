@@ -1,0 +1,248 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "VICINITY generic adapter - developed by bAvenir. The REST API is divided in two main groups, the AGENT (Calls that use the Gateway to contact the VICINITY platform) and the API (calls oriented to monitor and make use to the adapter resources)",
+    "version": "1.0.0",
+    "title": "bAvenir adapter",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "autocollection",
+      "description": "ADAPTER - Set auto-collection of properties or events"
+    },
+    {
+      "name": "mqtt",
+      "description": "ADAPTER - Enable/Disable/Control the MQTT module available in the adapter"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/adapter/mqtt/connect": {
+      "get": {
+        "description": "Connect adapter to MQTT server. Connection settings should be defined in configuration file",
+        "tags": ["mqtt"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/adapter/mqtt/disconnect": {
+      "get": {
+        "description": "Disconnect adapter from MQTT server",
+        "tags": ["mqtt"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/adapter/mqtt/subscribe": {
+      "post": {
+        "description": "Subscribe to MQTT channel",
+        "tags": ["mqtt"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Object with topic to subscribe and equivalent VICINITY event",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "topic": {
+                  "description": "MQTT topic name in remote server. + and # Can be used as wildcards for single path level or multilevel respectively",
+                  "type": "string"
+                },
+                "event": {
+                  "description": "Event name used to match MQTT topic in VICINITY",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/adapter/mqtt/unsubscribe": {
+      "post": {
+        "description": "Unsubscribe from an MQTT channel",
+        "tags": [ "mqtt"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Object with topic to unsubscribe",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "topic": {
+                  "description":  "MQTT topic name in remote server. + and # Can be used as wildcards for single path level or multilevel respectively",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],          
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/adapter/properties/autorequest": {
+      "get": {
+        "description": "Starts the automatic collection of remote properties. These properties have to be defined in mapper.json and the request interval is configurable.",
+        "tags": [ "autocollection"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description":"Stop the automatic collection of properties.",
+        "tags": ["autocollection"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiResponse": {
+      "type":"object",
+      "properties": {
+        "error": {
+          "type": "boolean",
+          "default": false
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiResponseObject": {
+      "type":"object",
+      "properties": {
+        "error": {
+          "type": "boolean",
+          "default": false
+        },
+        "message": {
+          "type": "object"
+        }
+      }
+    },
+    "bodyRegistry": {
+      "type":"object",
+      "properties": {
+        "name" : {
+          "description": "Human readable name for the object",
+          "type": "string",
+          "required": true,
+          "default": "MySmartSensor"
+        },
+        "type" : {
+          "description": "VICINITY type to assign for the object",
+          "type": "string",
+          "required": true,
+          "default": "core:Device"
+        },
+        "adapterId" : {
+          "type": "string",
+          "description": "Id of the object in your infrastructure",
+          "required": true,
+          "default": "1234"
+        },
+        "properties": {
+          "type":"array",
+          "description": "Array of pid's. You can use only those you previously registered in the adapter",
+          "items": {
+              "type": "string"
+            }
+          },
+        "events": {
+          "type":"array",
+          "description": "Array of eid's. You can use only those you previously registered in the adapter",
+          "items": {
+              "type": "string"
+            }
+          },
+        "actions": {
+          "type":"array",
+          "description": "Array of aid's. You can use only those you previously registered in the adapter",
+          "items": {
+              "type": "string"
+            }
+        },
+        "version" : {
+          "type": "string",
+          "description": "Version of the registered device if applicable"
+        },
+        "description" : {
+          "type": "string",
+          "description": "Additional info"
+        }
+      }
+      },
+      "bodyUnRegistry": {
+        "type":"object",
+        "properties": {
+          "oids": {
+            "type":"array",
+            "description": "OIDs of those objects you would like to unregister",
+            "items": {
+                "type": "string"
+              }
+            }
+          }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

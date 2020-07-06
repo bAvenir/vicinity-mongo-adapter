@@ -1,0 +1,1 @@
+[{"oid":"0000", "interaction": "event", "interaction_id": "some_event"}]

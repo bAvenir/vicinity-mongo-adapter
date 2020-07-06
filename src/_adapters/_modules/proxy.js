@@ -4,7 +4,9 @@
  * Adapter acts as a proxy
  */
 
- const Req = require('../../_classes/request');
+ // Load VICINITY AGENT
+const vcntagent = require('bavenir-agent');
+const Req = vcntagent.classes.request;
 
  let fun = {};
 
@@ -12,6 +14,8 @@
         try{
             let request = new Req();
             request.setUri(url, '/get');
+            request.setMethod('POST');
+            request.addHeader('Content-Type', 'application/json');
             request.setBody({oid: oid, pid: pid});
             let result = await request.send();
             return Promise.resolve(result)
@@ -24,6 +28,8 @@
         try{
             let request = new Req();
             request.setUri(url, '/set');
+            request.setMethod('POST');
+            request.addHeader('Content-Type', 'application/json');
             request.setBody({oid: oid, pid: pid, body: body});
             let result = await request.send();
             return Promise.resolve(result)
@@ -36,6 +42,8 @@
         try{
             let request = new Req();
             request.setUri(url, '/event');
+            request.setMethod('POST');
+            request.addHeader('Content-Type', 'application/json');
             request.setBody({oid: oid, eid: eid, body: body});
             let result = await request.send();
             return Promise.resolve(result)
