@@ -1,9 +1,11 @@
-# bAvenir VICINITY adapter
+# bAvenir VICINITY adapter 
 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bAvenir/vicinity-generic-adapter?style=plastic)
 
 This is a Node.js project that acts as an adapter between VICINITY and other technologies or applications.
 It can be used for a quickstart integration into the VICINITY world, and also can be extended to integrate other technologies, databases or platforms.
+
+**Integration with MONGO for persistance** see section 4.2 how to leverage the automatic data collection with Mongo
 
 The first version aims to support the following interactions:
 
@@ -236,7 +238,9 @@ Under ./agent/imports a file with a mapping between mqtt topics and VICINITY eve
    2.  loading them into the adapter memory, this is automatic and happens everytime the adaper restarts;
    3.  and calling the API endpoint: GET /api/events/subscribe;
    4.  the events will be sent to src/_adapters/interface.js (proxyReceiveEvent)
-   5.  You can extend the adapter to do something with the event or use the proxy mode. In the Mongo version you can also automatically store entries in Mongo by setting the ADAPTER_DATA_COLLECTION_MODE="mongo"
+   5.  You can extend the adapter to do something with the event or use the proxy mode. In this version you can directly store messages into MONGO.
+       1.  Set up ADAPTER_DATA_COLLECTION_MODE="mongo"
+       2.  You can modify ./src/_adapters/mongo.js, the function **instert** to adapt to your needs.
 
 ###### Properties
 
@@ -245,7 +249,9 @@ Under ./agent/imports a file with a mapping between mqtt topics and VICINITY eve
     2. loading them into the adapter memory, this is automatic and happens everytime the adaper restarts;
     3. Start the autocollection: GET /adapter/properties/autorequest
     4. A node JS timer will handle the requests;
-    5. the result of the calls will be send to src/_adapters/_classes/propertiesTimer.js, where you can define what to do by extending the funtion _action. In the Mongo version you can also automatically store entries in Mongo by setting the ADAPTER_DATA_COLLECTION_MODE="mongo"
+    5. You can extend the adapter to do something with the event or use the proxy mode. In this version you can directly store messages into MONGO.
+       1.  Set up ADAPTER_DATA_COLLECTION_MODE="mongo"
+       2.  You can modify ./src/_adapters/mongo.js, the function **instert** to adapt to your needs.
 
 ### 4.3 - Integrate your own app or technology
 

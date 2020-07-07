@@ -12,6 +12,7 @@ dotenv.config();
 let config = module.exports = {};
 
 // Argument passed to node when starting app
+config.serviceOid = process.env.ADAPTER_SERVICE_OID || null;
 config.rootPath = process.env.NODE_PATH || ".";
 config.responseMode = process.env.ADAPTER_RESPONSE_MODE || "dummy";
 config.dataCollectionMode = process.env.ADAPTER_DATA_COLLECTION_MODE || "mongo";

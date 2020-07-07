@@ -58,13 +58,13 @@ services:
     image: mongo:latest
     # env_file:
     # - .env
-    # volumes:
-    # - ./mongo/volume:/data/db
-    # - ./mongo/log:/data/log
+    volumes:
+    - ./mongo/volume:/data/db
+    - ./mongo/log:/data/log
     # - ./mongo/init:/docker-entrypoint-initdb.d
     # ports:
     # - 27017:27017
-    # command: --logpath /data/log/mongodb.log
+    command: --logpath /data/log/mongodb.log
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
       interval: 30s
